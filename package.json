@@ -1,0 +1,24 @@
+{
+	"name": "tweetbot_covid19",
+	"version": "1.0.0",
+	"description": "This is a twitter bot that tweets Malaysia COVID19 stats daily",
+	"main": "app.js",
+	"scripts": {
+		"start": "node app.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/faizriad94/tweetBot_covid19.git"
+	},
+	"author": "Faiz Riad",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/faizriad94/tweetBot_covid19/issues"
+	},
+	"homepage": "https://github.com/faizriad94/tweetBot_covid19#readme",
+	"dependencies": {
+		"axios": "^0.19.2",
+		"cheerio": "^1.0.0-rc.3",
+		"twit": "^2.2.11"
+	}
+}
