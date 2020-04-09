@@ -5,7 +5,7 @@ const botName = 'covid_bot_my';
 const once_a_day = 1000 * 60 * 60 * 24;
 
 // Twitter stream events for bot to reply
-// twit.stream(`@${botName}`, bot.getStreamEvents);
+twit.stream(`@${botName}`, bot.getStreamEvents);
 
 // Tweet daily stats
 bot.getTotalStats();
