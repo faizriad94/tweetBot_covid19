@@ -46,8 +46,9 @@ function getStreamEvents(e) {
  * @param { string } tweetId  - id of the tweet
  */
 function getTips(user, tweetId) {
-	let newTweet = `@${user} ${tips[rng]} #covidTips`;
+	let newTweet = `@${user} ${tips[rng]} #COVID19 #COVID19MALAYSIA`;
 	twit.sendTweet(newTweet, tweetId);
+	console.log(`Sent tips to @${user}`);
 }
 
 async function getYesterdayData() {
@@ -73,7 +74,6 @@ async function getYesterdayData() {
 	};
 }
 
-// Get stats of covid-19 in Malaysia
 async function getTotalStats() {
 	let yd = await getYesterdayData();
 	let lastTotalCase = yd.lastTotalCase;
@@ -94,84 +94,35 @@ async function getTotalStats() {
 	let minute = date.getMinutes();
 	let isAM = hour < 12 ? 'am' : 'pm';
 
-	// twit.sendTweet(`Ringkasan Kes COVID-19 terkini di Malaysia (Sehingga ${regularHour(
-	// 	hour
-	// )}:${minute}${isAM}, ${day}-${month}-${year})
-	// Jumlah Kes Baru: ${d[0].totalConfirmed - lastTotalCase}
-	// Jumlah Pulih Baru: ${d[0].totalRecovered - lastTotalR}
-	// Jumlah Kematian Baru: ${d[0].totalDeaths - lastTotalDeath}
+	twit.sendTweet(`Ringkasan Kes COVID-19 terkini di Malaysia (Sehingga ${regularHour(
+		hour
+	)}:${minute}${isAM}, ${day}-${month}-${year})
+	Jumlah Kes Baru: ${d[0].totalConfirmed - lastTotalCase}
+	Jumlah Pulih Baru: ${d[0].totalRecovered - lastTotalRecover}
+	Jumlah Kematian Baru: ${d[0].totalDeaths - lastTotalDeath}
 
-	// Jumlah Kes: ${d[0].totalConfirmed}
-	// Jumlah Pulih: ${d[0].totalRecovered}
-	// Jumlah Kritikal: ${d[0].totalCritical}
-	// Jumlah Dalam Rawatan: ${d[0].activeCases}
-	// Jumlah Kematian: ${d[0].totalDeaths}`);
+	Jumlah Kes: ${d[0].totalConfirmed}
+	Jumlah Pulih: ${d[0].totalRecovered}
+	Jumlah Kritikal: ${d[0].totalCritical}
+	Jumlah Dalam Rawatan: ${d[0].activeCases}
+	Jumlah Kematian: ${d[0].totalDeaths}`);
 
-	console.log(
-		`Ringkasan Kes COVID19 terkini di Malaysia (Sehingga ${regularHour(
-			hour
-		)}:${minute}${isAM}, ${day}-${month}-${year})
-		Jumlah Kes Baru: ${data[0].totalConfirmed - lastTotalCase}
-		Jumlah Pulih Baru: ${data[0].totalRecovered - lastTotalRecover}
-		Jumlah Kemation Baru: ${data[0].totalDeaths - lastTotalDeath}
+	// console.log(
+	// 	`Ringkasan Kes COVID19 terkini di Malaysia (Sehingga ${regularHour(
+	// 		hour
+	// 	)}:${minute}${isAM}, ${day}-${month}-${year})
+	// 	Jumlah Kes Baru: ${data[0].totalConfirmed - lastTotalCase}
+	// 	Jumlah Pulih Baru: ${data[0].totalRecovered - lastTotalRecover}
+	// 	Jumlah Kemation Baru: ${data[0].totalDeaths - lastTotalDeath}
 
-		Jumlah Kes: ${data[0].totalConfirmed}
-		Jumlah Pulih: ${data[0].totalRecovered}
-		Jumlah Kritikal: ${data[0].totalCritical}
-		Jumlah Dalam Rawatan: ${data[0].activeCases}
-	    Jumlah Kematian: ${data[0].totalDeaths}
-	    #COVID19 #COVID19Malaysia`
-	);
+	// 	Jumlah Kes: ${data[0].totalConfirmed}
+	// 	Jumlah Pulih: ${data[0].totalRecovered}
+	// 	Jumlah Kritikal: ${data[0].totalCritical}
+	// 	Jumlah Dalam Rawatan: ${data[0].activeCases}
+	//     Jumlah Kematian: ${data[0].totalDeaths}
+	//     #COVID19 #COVID19Malaysia`
+	// );
 }
-// function getTotalStats() {
-// 	let totalStats = getEndpoint(
-// 		'http://api.coronatracker.com/v3/stats/worldometer/country?countryCode=MY'
-// 	);
-
-// 	totalStats.then((data) => {
-// 		let date = new Date(data[0].lastUpdated);
-
-// 		let year = date.getFullYear();
-// 		let month = date.getMonth() + 1;
-// 		let day = date.getDate();
-
-// 		let hour = date.getHours();
-// 		let minute = date.getMinutes();
-// 		let isAM = hour < 12 ? 'am' : 'pm';
-
-// 		last = data[0].lastUpdated;
-// 		console.log('last updated' + last);
-
-// 		// twit.sendTweet(`Ringkasan Kes COVID-19 terkini di Malaysia (Sehingga ${regularHour(
-// 		// 	hour
-// 		// )}:${minute}${isAM}, ${day}-${month}-${year})
-// 		// Jumlah Kes Baru: ${d[0].totalConfirmed - lastTotalCase}
-// 		// Jumlah Pulih Baru: ${d[0].totalRecovered - lastTotalR}
-// 		// Jumlah Kematian Baru: ${d[0].totalDeaths - lastTotalDeath}
-
-// 		// Jumlah Kes: ${d[0].totalConfirmed}
-// 		// Jumlah Pulih: ${d[0].totalRecovered}
-// 		// Jumlah Kritikal: ${d[0].totalCritical}
-// 		// Jumlah Dalam Rawatan: ${d[0].activeCases}
-// 		// Jumlah Kematian: ${d[0].totalDeaths}`);
-
-// 		console.log(
-// 			`Ringkasan Kes COVID19 terkini di Malaysia (Sehingga ${regularHour(
-// 				hour
-// 			)}:${minute}${isAM}, ${day}-${month}-${year})
-// 		Jumlah Kes Baru: ${data[0].totalConfirmed - lastTotalCase}
-// 		Jumlah Pulih Baru: ${data[0].totalRecovered - lastTotalR}
-// 		Jumlah Kemation Baru: ${data[0].totalDeaths - lastTotalDeath}
-
-// 		Jumlah Kes: ${data[0].totalConfirmed}
-// 		Jumlah Pulih: ${data[0].totalRecovered}
-// 		Jumlah Kritikal: ${data[0].totalCritical}
-// 		Jumlah Dalam Rawatan: ${data[0].activeCases}
-//         Jumlah Kematian: ${data[0].totalDeaths}
-//         #COVID19 #COVID19Malaysia`
-// 		);
-// 	});
-// }
 
 /**
  * Get stats of each Malaysia states.
@@ -218,10 +169,9 @@ function getStatsByState(user, tweetId) {
 			message += `${k}: ${v}\n`;
 		}
 
-		let newTweet = `@${user} ${message} #covid19`;
+		let newTweet = `@${user} ${message} #COVID19 #COVID19MALAYSIA`;
 		twit.sendTweet(newTweet, tweetId);
-
-		console.log(str);
+		console.log(`Sent negeri stats to @${user}`);
 	});
 }
 
