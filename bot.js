@@ -97,15 +97,15 @@ async function getTotalStats() {
 	twit.sendTweet(`Ringkasan Kes COVID-19 terkini di Malaysia (Sehingga ${regularHour(
 		hour
 	)}:${minute}${isAM}, ${day}-${month}-${year})
-	Jumlah Kes Baru: ${d[0].totalConfirmed - lastTotalCase}
-	Jumlah Pulih Baru: ${d[0].totalRecovered - lastTotalRecover}
-	Jumlah Kematian Baru: ${d[0].totalDeaths - lastTotalDeath}
+	Jumlah Kes Baru: ${data[0].totalConfirmed - lastTotalCase}
+	Jumlah Pulih Baru: ${data[0].totalRecovered - lastTotalRecover}
+	Jumlah Kematian Baru: ${data[0].totalDeaths - lastTotalDeath}
 
-	Jumlah Kes: ${d[0].totalConfirmed}
-	Jumlah Pulih: ${d[0].totalRecovered}
-	Jumlah Kritikal: ${d[0].totalCritical}
-	Jumlah Dalam Rawatan: ${d[0].activeCases}
-	Jumlah Kematian: ${d[0].totalDeaths}`);
+	Jumlah Kes: ${data[0].totalConfirmed}
+	Jumlah Pulih: ${data[0].totalRecovered}
+	Jumlah Kritikal: ${data[0].totalCritical}
+	Jumlah Dalam Rawatan: ${data[0].activeCases}
+	Jumlah Kematian: ${data[0].totalDeaths}`);
 
 	// console.log(
 	// 	`Ringkasan Kes COVID19 terkini di Malaysia (Sehingga ${regularHour(
