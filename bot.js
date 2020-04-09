@@ -94,9 +94,7 @@ async function getTotalStats() {
 	let minute = date.getMinutes();
 	let isAM = hour < 12 ? 'am' : 'pm';
 
-	twit.sendTweet(`Ringkasan Kes COVID-19 terkini di Malaysia (Sehingga ${regularHour(
-		hour
-	)}:${minute}${isAM}, ${day}-${month}-${year})
+	twit.sendTweet(`Ringkasan Kes COVID-19 terkini di Malaysia (Sehingga 6:00 petang, ${day}-${month}-${year})
 	Jumlah Kes Baru: ${data[0].totalConfirmed - lastTotalCase}
 	Jumlah Pulih Baru: ${data[0].totalRecovered - lastTotalRecover}
 	Jumlah Kematian Baru: ${data[0].totalDeaths - lastTotalDeath}
@@ -105,23 +103,8 @@ async function getTotalStats() {
 	Jumlah Pulih: ${data[0].totalRecovered}
 	Jumlah Kritikal: ${data[0].totalCritical}
 	Jumlah Dalam Rawatan: ${data[0].activeCases}
-	Jumlah Kematian: ${data[0].totalDeaths}`);
-
-	// console.log(
-	// 	`Ringkasan Kes COVID19 terkini di Malaysia (Sehingga ${regularHour(
-	// 		hour
-	// 	)}:${minute}${isAM}, ${day}-${month}-${year})
-	// 	Jumlah Kes Baru: ${data[0].totalConfirmed - lastTotalCase}
-	// 	Jumlah Pulih Baru: ${data[0].totalRecovered - lastTotalRecover}
-	// 	Jumlah Kemation Baru: ${data[0].totalDeaths - lastTotalDeath}
-
-	// 	Jumlah Kes: ${data[0].totalConfirmed}
-	// 	Jumlah Pulih: ${data[0].totalRecovered}
-	// 	Jumlah Kritikal: ${data[0].totalCritical}
-	// 	Jumlah Dalam Rawatan: ${data[0].activeCases}
-	//     Jumlah Kematian: ${data[0].totalDeaths}
-	//     #COVID19 #COVID19Malaysia`
-	// );
+	Jumlah Kematian: ${data[0].totalDeaths}
+	#COVID19 #COVID19Malaysia`);
 }
 
 /**
@@ -129,50 +112,48 @@ async function getTotalStats() {
  * @param { string } user - username of the twitter account
  * @param { string } tweetId  - id of the tweet
  */
-function getStatsByState(user, tweetId) {
+async function getStatsByState(user, tweetId) {
 	//web scrape from website
-	let data = getEndpoint('https://www.outbreak.my/');
+	let data = await getEndpoint('https://www.outbreak.my/');
 	let info = {};
 
-	data.then((res) => {
-		const $ = cheerio.load(res);
-		$('tbody tr').each((i, e) => {
-			let negeri = $(e).children('.text-value').text().trim().toLowerCase();
-			let total = $(e).children('.text-value-total').text();
-			let death = $(e).children('.text-value-black').text();
+	const $ = cheerio.load(data);
+	$('tbody tr').each((i, e) => {
+		let negeri = $(e).children('.text-value').text().trim().toLowerCase();
+		let total = $(e).children('.text-value-total').text();
+		let death = $(e).children('.text-value-black').text();
 
-			if (negeri === 'kuala lumpur') {
-				negeri = 'KL';
-			}
-
-			if (negeri === 'negeri sembilan') {
-				negeri = 'n9';
-			}
-
-			info[negeri] = [negeri, total.trim(), death.trim()];
-		});
-
-		let stateData = [];
-		for (let [key, value] of Object.entries(info)) {
-			//checks for total death more than 0
-			if (value[1] > 0) {
-				stateData.push([upper(key), value[1], value[2]]);
-			}
+		if (negeri === 'kuala lumpur') {
+			negeri = 'KL';
 		}
 
-		let message = 'Kes Mengikut Negeri:\n';
-
-		// let ans = arr.sort(function(a, b) {
-		// 	return b[1] - a[1];
-		// });
-		for (const [k, v, a] of stateData) {
-			message += `${k}: ${v}\n`;
+		if (negeri === 'negeri sembilan') {
+			negeri = 'n9';
 		}
 
-		let newTweet = `@${user} ${message} #COVID19 #COVID19MALAYSIA`;
-		twit.sendTweet(newTweet, tweetId);
-		console.log(`Sent negeri stats to @${user}`);
+		info[negeri] = [negeri, total.trim(), death.trim()];
 	});
+
+	let stateData = [];
+	for (let [key, value] of Object.entries(info)) {
+		//checks for total death more than 0
+		if (value[1] > 0) {
+			stateData.push([upper(key), value[1], value[2]]);
+		}
+	}
+
+	let message = 'Kes Mengikut Negeri:\n';
+
+	// let ans = arr.sort(function(a, b) {
+	// 	return b[1] - a[1];
+	// });
+	for (const [k, v, a] of stateData) {
+		message += `${k}: ${v}\n`;
+	}
+
+	let newTweet = `@${user} ${message} #COVID19 #COVID19MALAYSIA`;
+	twit.sendTweet(newTweet, tweetId);
+	console.log(`Sent negeri stats to @${user}`);
 }
 
 // Convert military to regular hour
@@ -189,4 +170,5 @@ module.exports = {
 	getStreamEvents: getStreamEvents,
 	getTotalStats: getTotalStats,
 	getYesterdayData: getYesterdayData,
+	getStatsByState: getStatsByState,
 };

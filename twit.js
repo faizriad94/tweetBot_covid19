@@ -17,13 +17,6 @@ module.exports = {
 				if (err) {
 					console.log(err);
 				}
-				if (id_str) {
-					console.log(
-						`${data.user.screen_name} replied to ${data.in_reply_to_screen_name} on ${data.created_at}`
-					);
-				} else {
-					console.log(`${data.user.screen_name} tweeted on ${data.created_at}`);
-				}
 			}
 		);
 	},
@@ -49,6 +42,7 @@ module.exports = {
 
 	/**
 	 * Retweet
+	 * @param { string} - id of the tweet
 	 */
 	retweet: (id_str) => {
 		T.post('statuses/retweet/:id', { id: id_str }, function (
@@ -65,6 +59,8 @@ module.exports = {
 
 	/**
 	 * Stream
+	 * @param { string} name - search for keyword
+	 * @param { function } cb - callback function
 	 */
 	stream: (name, cb) => {
 		T.stream('statuses/filter', { track: name }).on('tweet', cb);
